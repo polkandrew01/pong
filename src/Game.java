@@ -4,7 +4,10 @@ import java.awt.event.*;
 
 public class Game {
 
+    public static Color[] colors = {Color.white, Color.blue, Color.cyan, Color.gray, Color.green, Color.lightGray, Color.magenta, Color.orange, Color.pink, Color.red, Color.yellow};
+    
     private JFrame frame;
+    private JFrame helpFrame;
     private static Game game;
     
     public static void main(String[] args) {
@@ -13,6 +16,7 @@ public class Game {
 	game.mainMenuGui();
     }
 
+    //Gui for main menu ----------------------------------------------------
     public void mainMenuGui() {
 	frame = new JFrame();
 	JPanel panel = new JPanel();
@@ -43,6 +47,23 @@ public class Game {
 	frame.setVisible(true);
     }
 
+    public void HelpGui() {
+	helpFrame = new JFrame();
+	JTextArea text = new JTextArea(10,20);
+	JButton button = new JButton("Back");
+	button.addActionListener(new HelpWListener());
+
+	text.setLineWrap(true);
+	text.setText("Player1 uses w and s. \nPlayer2 uses up and down arrows. \nUse space to start the ball moving");
+
+	helpFrame.add(BorderLayout.SOUTH, button);
+	helpFrame.add(BorderLayout.NORTH, text);
+	helpFrame.setSize(300,300);
+	
+	helpFrame.setVisible(true);
+    }
+
+    //Button listeners ---------------------------------------------------
     class NewGameListener implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		System.out.println("New game button clicked");
@@ -51,7 +72,9 @@ public class Game {
 	
     class HelpListener implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
-		System.out.println("Help button clicked");	
+		System.out.println("Help button clicked");
+		frame.setVisible(false);
+		game.HelpGui();
 	}
     }
 
@@ -59,6 +82,13 @@ public class Game {
 	public void actionPerformed(ActionEvent event) {
 		System.out.println("Exit button clicked");
 		System.exit(0);	
+	}
+    }
+
+    class HelpWListener implements ActionListener {
+	public void actionPerformed(ActionEvent event) {
+	    System.out.println("Help window back button clicked");
+	    helpFrame.setVisible(false);
 	}
     }
 }
