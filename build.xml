@@ -1,0 +1,52 @@
+<project>
+  <property name="mainClass" value="Game"/>
+  
+  <path id="project.class.path">
+    <pathelement location="${build}"/>
+  </path>
+
+  <target name="compile" description="compile the code">
+    <mkdir dir="build"/>
+    <javac srcdir="src" destdir="build" includeantruntime="false" debug="true">
+      <classpath refid="project.class.path"/>
+    </javac>
+  </target>
+
+  <target name="clean" description="clean up the project">
+    <delete>
+      <fileset dir="build" includes="*.class"/>
+      <fileset dir="build" includes="*.jar"/>
+    </delete>
+  </target>
+
+  <target name="run" depends="compile" description="run the main">
+    <java classname="${mainClass}" classpath="build" fork="true"/>
+  </target>
+
+  <target name="jar" depends="compile" description="create a jar file">
+    <jar destfile="build/pong.jar">
+      <fileset dir="build" includes="*.class"/>
+      <manifest>
+	<attribute name="Main-Class" value="${mainClass}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <property name="javadoc_absolute_path" location="javadoc"/>
+  <target name="javadoc" depends="compile" description="generate javadoc">
+    <delete>
+      <fileset dir="javadoc"/>
+    </delete>
+    <javadoc destdir="javadoc">
+      <fileset dir="src">
+	<include name="*.java"/>
+      </fileset>
+      <classpath refid="project.class.path"/>
+      <link href="https://docs.oracle.com/javase/8/docs/api/"/>
+    </javadoc>
+    <echo>
+      javadoc written to file://${javadoc_absolute_path}/index.html
+    </echo>
+  </target>
+
+</project>
